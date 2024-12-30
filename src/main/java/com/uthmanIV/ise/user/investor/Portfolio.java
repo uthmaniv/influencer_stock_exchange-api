@@ -2,6 +2,7 @@ package com.uthmanIV.ise.user.investor;
 
 import com.uthmanIV.ise.user.stock.Stock;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class Portfolio implements Serializable {
     private Set<Stock> stocks;
 
     @Column(name = "stock_value")
+    @NotNull
     private BigDecimal stockValue;
 
     @Override

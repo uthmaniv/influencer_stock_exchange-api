@@ -1,6 +1,7 @@
 package com.uthmanIV.ise.user.influencer;
 
 import com.uthmanIV.ise.user.User;
+import com.uthmanIV.ise.user.influencer.earnings.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import jakarta.validation.constraints.Size;
@@ -77,6 +78,10 @@ public class Influencer implements Serializable {
 
     @OneToMany(mappedBy = "influencer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Audience> audienceDetails;
+
+    @OneToOne
+    @JoinColumn(name = "wallet_id")
+    private Wallet wallet;
 
     public enum Gender {
         MALE,
