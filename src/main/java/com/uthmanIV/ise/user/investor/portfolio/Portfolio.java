@@ -29,7 +29,12 @@ public class Portfolio implements Serializable {
     @JoinColumn(name = "investor_id")
     private Investor investor;
 
-    @OneToMany(mappedBy = "portfolio")
+    @ManyToMany
+    @JoinTable(
+            name = "portfolio_stock",
+            joinColumns = @JoinColumn(name = "portfolio_id"),
+            inverseJoinColumns = @JoinColumn(name = "stock_id")
+    )
     private Set<Stock> stocks;
 
     @Column(name = "stock_value")

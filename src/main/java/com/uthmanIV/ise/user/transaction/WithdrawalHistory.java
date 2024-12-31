@@ -1,7 +1,7 @@
 package com.uthmanIV.ise.user.investor.wallet;
 
-import com.uthmanIV.ise.user.stock.Stock;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,48 +11,42 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
+
 
 @Entity
-@Table(name = "transaction_history")
+@Table(name = "withdrawal_history")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
-public class TransactionHistory {
+@Getter
+public class WithdrawalHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
+
+    @OneToOne
+    @JoinColumn(name = "wallet_id")
+    private Wallet wallet;
 
     @DateTimeFormat
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
+    @Column(name = "type",nullable = false)
     private TransactionType transactionType;
 
-    @OneToMany
-    @JoinColumn(name = "stock")
-    private Set<Stock> stocks;
-
-    @Column(name = "no_of_shares",nullable = false)
-    @NotNull
-    private BigDecimal shareBought;
-
-    @Column(name = "price")
-    @NotNull
-    private BigDecimal price;
+    @Column(name = "description")
+    @NotBlank
+    private String description;
 
     @Column(name = "amount")
     @NotNull
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    @NotNull
-    private TransactionStatus transactionStatus;
-
+    @Column(name = "status",nullable = false)
+    private TransactionStatus withdrawalStatus;
 
 }
