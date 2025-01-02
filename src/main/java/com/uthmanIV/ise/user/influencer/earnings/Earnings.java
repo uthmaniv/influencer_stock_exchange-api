@@ -1,5 +1,6 @@
 package com.uthmanIV.ise.user.influencer.earnings;
 
+import com.uthmanIV.ise.user.wallet.Wallet;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,10 @@ public class EarningHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "wallet_id")
+    private Wallet wallet;
 
     @DateTimeFormat
     @Column(name = "date")
