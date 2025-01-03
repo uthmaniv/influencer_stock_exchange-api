@@ -1,7 +1,9 @@
 package com.uthmanIV.ise.user.influencer;
 
 import com.uthmanIV.ise.user.User;
-import com.uthmanIV.ise.user.influencer.earnings.Wallet;
+import com.uthmanIV.ise.user.influencer.social_media.Audience;
+import com.uthmanIV.ise.user.influencer.social_media.SocialMediaAccount;
+import com.uthmanIV.ise.user.wallet.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import jakarta.validation.constraints.Size;
@@ -28,6 +30,9 @@ public class Influencer implements Serializable {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     @NotNull(message = "User association is required")
     private User user;
+
+//    @Column(name = "fullName")
+//    private String fullName;
 
     @Column(name = "stock_symbol", nullable = false)
     @NotBlank(message = "Stock symbol is required")
@@ -79,29 +84,6 @@ public class Influencer implements Serializable {
     @OneToMany(mappedBy = "influencer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Audience> audienceDetails;
 
-    @OneToOne
-    @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
-
-    public enum Gender {
-        MALE,
-        FEMALE,
-        NON_BINARY
-    }
-
-    public enum InfluencerType {
-        CONTENT_CREATOR,
-        WRITER,
-        ACTOR_ACTRESS,
-        MUSICIAN,
-        OTHER
-    }
-
-    public enum InfluencerTier{
-        MEGA,
-        MACRO,
-        MINI
-    }
 
     @Override
     public final boolean equals(Object o) {

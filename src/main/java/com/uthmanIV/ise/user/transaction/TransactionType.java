@@ -1,7 +1,10 @@
-package com.uthmanIV.ise.user.investor.wallet;
+package com.uthmanIV.ise.user.transaction;
 
 public enum TransactionType {
     BUY,
     SELL,
-    PAYMENT,
+    WITHDRAWAL,
+    DEPOSIT,
+    //PAYMENT,
+
 }

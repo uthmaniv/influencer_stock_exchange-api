@@ -1,6 +1,6 @@
-package com.uthmanIV.ise.user.investor.portfolio;
+package com.uthmanIV.ise.user.portfolio;
 
-import com.uthmanIV.ise.user.investor.Investor;
+import com.uthmanIV.ise.user.User;
 import com.uthmanIV.ise.user.stock.Stock;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +28,7 @@ public class Portfolio implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "investor_id")
-    private Investor investor;
+    private User user;
 
     @ManyToMany
     @JoinTable(
@@ -62,7 +62,7 @@ public class Portfolio implements Serializable {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
-                "investor = " + investor + ", " +
+                "user = " + user + ", " +
                 "stockValue = " + stockValue + ")";
     }
 }

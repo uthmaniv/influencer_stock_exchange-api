@@ -1,13 +1,13 @@
-package com.uthmanIV.ise.user.investor.portfolio;
+package com.uthmanIV.ise.user.portfolio;
 
-import com.uthmanIV.ise.exceptions.InsufficientFundsException;
 import com.uthmanIV.ise.exceptions.ResourceNotFoundException;
 import com.uthmanIV.ise.user.User;
 import com.uthmanIV.ise.user.investor.Investor;
 import com.uthmanIV.ise.user.stock.Stock;
 import com.uthmanIV.ise.user.stock.StockMapper;
+import com.uthmanIV.ise.user.stock.StockRepository;
 import com.uthmanIV.ise.user.stock.StockResponseDto;
-import com.uthmanIV.ise.user.wallet.Wallet;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
@@ -18,6 +18,7 @@ import java.util.List;
 public class PortfolioService {
 
     private final PortfolioRepository portfolioRepository;
+    private final StockRepository stockRepository;
     private final StockMapper stockMapper;
 
     public List<StockResponseDto> getPortfolioStocks(Investor investor){
@@ -28,25 +29,43 @@ public class PortfolioService {
                 .toDtoList(portfolio.getStocks());
     }
 
-    public void buyStock(User user,BigDecimal numberOfShares, Stock stock){
-        BigDecimal stockPrice = numberOfShares .multiply(stock.getCurrentPrice());
-        if (!validateBuyingPower(user, stockPrice)) {
-            throw new InsufficientFundsException("Insufficient funds to complete the purchase.");
-        }
-        //validates the buying power of the investor in respect to the (stockprice * no_shares)
-        //if valid, adds the stock to the investor's portfolio and subtract the amount from his buying power
-        //update his stock value (to add up the stock value to his total stock value)
-        //updates the influencer's (stock bought) earnings
+    @Transactional
+    public void updateUserPortfolioValue(User user, String transactionType,BigDecimal stockValue){
+        Portfolio portfolio = user.getPortfolio();
 
+        if (transactionType.equals("BUY")){
+            portfolio.setStockValue(portfolio
+                    .getStockValue()
+                    .add(stockValue));
+        }
+        else {
+            portfolio.setStockValue(portfolio
+                    .getStockValue()
+                    .subtract(stockValue));
+        }
+
+        portfolioRepository.save(portfolio);
     }
 
-    public boolean validateBuyingPower(User user, BigDecimal stockPrice) {
-        Wallet userWallet = user.getWallet();
-        BigDecimal newBalance = userWallet.getWalletBalance().subtract(stockPrice);
+    public void updateInfluencerEarningOnPurchase(Stock stock,BigDecimal stockPrice){
+        stockRepository.save(stock);
+    }
 
-        // Check if newBalance is greater than or equal to 0
-        //returns -1 if insufficient funds
-        return newBalance.compareTo(BigDecimal.ZERO) >= 0;
+    @Transactional
+    public void addStockToPortfolio(User user,Stock newStock){
+        Portfolio portfolio = user.getPortfolio();
+
+        portfolio.getStocks().add(newStock);
+
+        portfolioRepository.save(portfolio);
+    }
+
+    @Transactional
+    public void removeStockFromPortfolio(User user, Stock stock){
+        Portfolio portfolio = user.getPortfolio();
+
+        portfolio.getStocks().remove(stock);
+        portfolioRepository.save(portfolio);
     }
 
 }

@@ -1,4 +1,15 @@
 package com.uthmanIV.ise.user.stock.stock_transaction;
 
-public class StockTransactionDto {
-}
+import com.uthmanIV.ise.user.transaction.TransactionStatus;
+import com.uthmanIV.ise.user.transaction.TransactionType;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public record StockTransactionDto(LocalDateTime localDateTime,
+                                  TransactionType transactionType,
+                                  String stockSymbol,
+                                  BigDecimal sharesBought,
+                                  BigDecimal price,
+                                  BigDecimal amount,
+                                  TransactionStatus transactionStatus) {}

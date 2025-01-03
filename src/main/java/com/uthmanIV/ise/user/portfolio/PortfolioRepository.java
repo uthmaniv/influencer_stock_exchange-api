@@ -1,4 +1,4 @@
-package com.uthmanIV.ise.user.investor.portfolio;
+package com.uthmanIV.ise.user.portfolio;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

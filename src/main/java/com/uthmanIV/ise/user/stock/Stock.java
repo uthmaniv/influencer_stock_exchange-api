@@ -1,7 +1,6 @@
 package com.uthmanIV.ise.user.stock;
 
 import com.uthmanIV.ise.user.influencer.Influencer;
-import com.uthmanIV.ise.user.investor.Portfolio;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -27,10 +26,6 @@ public class Stock {
     @NotNull(message = "Influencer association is required")
     private Influencer influencer;
 
-    @Column(name = "stock_symbol", nullable = false, unique = true)
-    @NotBlank(message = "Stock symbol is required")
-    @Size(min = 1, max = 10, message = "Stock symbol must be between 1 and 10 characters")
-    private String stockSymbol;
 
     @Column(name = "current_price", nullable = false)
     @NotNull(message = "Current price is required")
@@ -41,33 +36,18 @@ public class Stock {
     @NotNull(message = "Today's price change is required")
     private BigDecimal priceChangeToday;
 
-    @Column(name = "price_change_7days", nullable = false)
+    @Column(name = "weeklyPriceChange", nullable = false)
     @NotNull(message = "7-day price change is required")
-    private BigDecimal priceChange7Days;
+    private BigDecimal weeklyPriceChange;
 
     @Column(name = "market_cap", nullable = false)
     @NotNull(message = "Market cap is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Market cap must be greater than 0")
     private BigDecimal marketCap;
 
-    @Column(name = "tier", nullable = false)
-    @NotBlank(message = "Tier is required")
-    private String tier;
-
-    @OneToOne
-    @Column(name = "influencer_tier")
-    private Influencer.InfluencerTier influencerTier;
-
     @Column(name = "last_updated", nullable = false)
     @NotNull(message = "Last updated timestamp is required")
     private LocalDateTime lastUpdated;
-
-   @ManyToOne
-   @JoinColumn(name = "portfolio_id")
-   private Portfolio portfolio;
-
-    @Column(name = "picture_url")
-    private String pictureUrl; // Optional, used for card view display
 
     @Override
     public final boolean equals(Object o) {
@@ -92,13 +72,10 @@ public class Stock {
     public String toString() {
         return "Stock{" +
                 "influencer=" + influencer +
-                ", stockSymbol='" + stockSymbol + '\'' +
                 ", currentPrice=" + currentPrice +
                 ", priceChangeToday=" + priceChangeToday +
-                ", priceChange7Days=" + priceChange7Days +
+                ", priceChange7Days=" + weeklyPriceChange +
                 ", marketCap=" + marketCap +
-                ", tier='" + tier + '\'' +
-                ", influencerTier=" + influencerTier +
                 '}';
     }
 }

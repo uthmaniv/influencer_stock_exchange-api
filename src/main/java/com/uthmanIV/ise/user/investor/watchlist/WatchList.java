@@ -1,12 +1,12 @@
-package com.uthmanIV.ise.user.investor;
+package com.uthmanIV.ise.user.investor.watchlist;
 
+import com.uthmanIV.ise.user.investor.Investor;
 import com.uthmanIV.ise.user.stock.Stock;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.Set;
 

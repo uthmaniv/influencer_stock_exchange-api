@@ -1,5 +1,7 @@
 package com.uthmanIV.ise.user;
 
+import com.uthmanIV.ise.user.portfolio.Portfolio;
+import com.uthmanIV.ise.user.wallet.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import jakarta.validation.constraints.Size;
@@ -30,6 +32,9 @@ public class User {
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
+    @Column(name = "picture")
+    private String pictureUrl;
+
     @Column(nullable = false)
     @NotBlank(message = "First name is required")
     @Size(max = 50, message = "First name cannot exceed 50 characters")
@@ -48,6 +53,14 @@ public class User {
     @Column(nullable = false)
     @NotNull(message = "Verification status is required")
     private Boolean verificationStatus = false;
+
+    @OneToOne
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
+
+    @OneToOne
+    @JoinColumn(name = "wallet_id")
+    private Wallet wallet;
 
     public enum UserType {
         INVESTOR,

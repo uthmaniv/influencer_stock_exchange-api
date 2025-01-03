@@ -1,4 +1,4 @@
-package com.uthmanIV.ise.user.investor.wallet;
+package com.uthmanIV.ise.user.wallet;
 
 import com.uthmanIV.ise.user.User;
 import com.uthmanIV.ise.user.investor.Investor;
@@ -24,16 +24,13 @@ public class Wallet {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // Represents either an influencer or an investor
+    private User user; // Represents either an influencer or an user
 
     @Column(name = "wallet_balance", nullable = false)
     private BigDecimal walletBalance;
 
     @Column(name = "earnings") // Specific to influencers
     private BigDecimal earnings;
-
-    @Column(name = "stock_value") // Specific to investors
-    private BigDecimal stockValue;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

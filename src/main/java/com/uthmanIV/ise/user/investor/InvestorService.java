@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 public class InvestorService {
 
     private final StockRepository stockRepository;
-
     private final InvestorRepository investorRepository;
 
 

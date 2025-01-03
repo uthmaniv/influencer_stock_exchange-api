@@ -1,21 +1,19 @@
 package com.uthmanIV.ise.user.investor;
 
 import com.uthmanIV.ise.user.User;
-import com.uthmanIV.ise.user.investor.wallet.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.mapping.Join;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "investor")
+@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -30,14 +28,6 @@ public class Investor implements Serializable {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     @NotNull(message = "User association is required")
     private User user;
-
-    @OneToOne
-    @JoinColumn(name = "portfolio_id")
-    private Portfolio portfolio;
-
-    @OneToOne
-    @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
 
     @Override
     public final boolean equals(Object o) {

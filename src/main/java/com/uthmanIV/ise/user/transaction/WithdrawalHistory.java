@@ -1,5 +1,6 @@
-package com.uthmanIV.ise.user.investor.wallet;
+package com.uthmanIV.ise.user.transaction;
 
+import com.uthmanIV.ise.user.wallet.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

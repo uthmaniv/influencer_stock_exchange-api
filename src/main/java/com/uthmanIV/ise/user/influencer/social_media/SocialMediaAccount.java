@@ -1,5 +1,6 @@
-package com.uthmanIV.ise.user.influencer;
+package com.uthmanIV.ise.user.influencer.social_media;
 
+import com.uthmanIV.ise.user.influencer.Influencer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;

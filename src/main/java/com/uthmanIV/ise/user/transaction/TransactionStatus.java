@@ -1,4 +1,4 @@
-package com.uthmanIV.ise.user.investor.wallet;
+package com.uthmanIV.ise.user.transaction;
 
 public enum TransactionStatus {
 
