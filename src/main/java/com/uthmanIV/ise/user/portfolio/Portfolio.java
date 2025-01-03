@@ -1,5 +1,6 @@
-package com.uthmanIV.ise.user.investor;
+package com.uthmanIV.ise.user.investor.portfolio;
 
+import com.uthmanIV.ise.user.investor.Investor;
 import com.uthmanIV.ise.user.stock.Stock;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
