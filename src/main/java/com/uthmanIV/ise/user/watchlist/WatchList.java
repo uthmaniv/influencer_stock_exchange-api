@@ -1,5 +1,6 @@
 package com.uthmanIV.ise.user.investor.watchlist;
 
+import com.uthmanIV.ise.user.User;
 import com.uthmanIV.ise.user.investor.Investor;
 import com.uthmanIV.ise.user.stock.Stock;
 import jakarta.persistence.*;
@@ -23,8 +24,8 @@ public class WatchList {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "investor_id")
-    private Investor investor;
+    @JoinColumn(name = "user_id")
+    private User User;
 
     @ManyToMany
     @JoinTable(
