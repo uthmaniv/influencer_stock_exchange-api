@@ -13,18 +13,18 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class EarningService {
+public class EarningsService {
 
     private final EarningsRepository earningsRepository;
     private final EarningsMapper earningsMapper;
     private final UserRepository userRepository;
 
-    private List<EarningsDto> getAllEarnings(User user){
+    public List<EarningsDto> getAllEarnings(User user){
         return earningsMapper
                 .toDtoList(earningsRepository.findByUserId(user.getId()));
     }
 
-    private void addEarnings(User user, BigDecimal numberOfShares, Stock stock){
+    public void addEarnings(User user, BigDecimal numberOfShares, Stock stock){
         //earning per share method will be called passing the numberOfShares
         Earnings userEarning = new Earnings();
         userEarning.setUser(

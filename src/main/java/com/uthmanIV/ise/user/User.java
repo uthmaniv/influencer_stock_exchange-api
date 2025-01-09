@@ -1,5 +1,6 @@
 package com.uthmanIV.ise.user;
 
+import com.uthmanIV.ise.user.watchlist.WatchList;
 import com.uthmanIV.ise.user.portfolio.Portfolio;
 import com.uthmanIV.ise.user.wallet.Wallet;
 import jakarta.persistence.*;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.usertype.UserType;
 
 import java.util.Objects;
 
@@ -57,6 +59,10 @@ public class User {
     @OneToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "watchlist")
+    private WatchList watchList;
 
     @OneToOne
     @JoinColumn(name = "wallet_id")

@@ -21,10 +21,11 @@ public class PortfolioService {
     private final StockRepository stockRepository;
     private final StockMapper stockMapper;
 
-    public List<StockResponseDto> getPortfolioStocks(Investor investor){
+    public List<StockResponseDto> getPortfolioStocks(Long userId){
         Portfolio portfolio = portfolioRepository
-                .findById(investor.getId())
-                .orElseThrow(()-> new ResourceNotFoundException("Portfolio Not Found"));
+                .findById(userId)
+                .orElseThrow(()->
+                        new ResourceNotFoundException("Portfolio Not Found For user with id: " + userId));
         return stockMapper
                 .toDtoList(portfolio.getStocks());
     }

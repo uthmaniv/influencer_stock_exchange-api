@@ -1,4 +1,10 @@
 package com.uthmanIV.ise.user.transaction;
 
-public interface WithdrawalHistoryRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface WithdrawalHistoryRepository extends JpaRepository<WithdrawalHistory,Long> {
+
+    List<WithdrawalHistory> findWithdrawalHistoryByUserId(Long id);
 }

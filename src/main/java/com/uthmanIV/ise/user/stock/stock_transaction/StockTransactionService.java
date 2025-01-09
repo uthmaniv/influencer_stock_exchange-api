@@ -2,6 +2,7 @@ package com.uthmanIV.ise.user.stock.stock_transaction;
 
 import com.uthmanIV.ise.exceptions.InsufficientFundsException;
 import com.uthmanIV.ise.user.User;
+import com.uthmanIV.ise.user.influencer.earnings.EarningsService;
 import com.uthmanIV.ise.user.portfolio.PortfolioService;
 import com.uthmanIV.ise.user.stock.Stock;
 import com.uthmanIV.ise.user.wallet.Wallet;
@@ -20,6 +21,7 @@ public class StockTransactionService {
     private final WalletService walletService;
     private final PortfolioService portfolioService;
     private final WalletRepository walletRepository;
+    private final EarningsService earningsService;
 
     @Transactional
     public void buyStock(User user, BigDecimal numberOfShares, Stock stock){
@@ -31,7 +33,7 @@ public class StockTransactionService {
         walletService.updateWalletBalance(user.getWallet(),stockPrice,"ADD");
         portfolioService.updateUserPortfolioValue(user,"BUY", stockPrice);
         portfolioService.addStockToPortfolio(user,stock);
-        updateInfluencerEarningOnPurchase(stock,stockPrice);
+        earningsService.addEarnings(user,numberOfShares,stock);//update influencer earning
         walletRepository.save(user.getWallet());
     }
 

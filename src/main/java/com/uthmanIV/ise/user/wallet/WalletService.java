@@ -1,16 +1,6 @@
 package com.uthmanIV.ise.user.wallet;
 
-import com.uthmanIV.ise.exceptions.InsufficientFundsException;
 import com.uthmanIV.ise.user.User;
-import com.uthmanIV.ise.user.UserRepository;
-import com.uthmanIV.ise.user.influencer.InfluencerRepository;
-import com.uthmanIV.ise.user.investor.InvestorRepository;
-import com.uthmanIV.ise.user.portfolio.Portfolio;
-import com.uthmanIV.ise.user.portfolio.PortfolioRepository;
-import com.uthmanIV.ise.user.portfolio.PortfolioService;
-import com.uthmanIV.ise.user.stock.Stock;
-import com.uthmanIV.ise.user.stock.StockRepository;
-import com.uthmanIV.ise.user.transaction.TransactionType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,13 +39,15 @@ public class WalletService {
 
         walletRepository.save(wallet);
     }
+    public void deposit(Wallet wallet,BigDecimal amount){
+        updateWalletBalance(wallet,amount,"ADD");
 
-    public void updateTotalStockValueOnPurchase(Wallet wallet, BigDecimal stockValue){
-        wallet.setStockValue(wallet
-                .getStockValue()
-                .add(stockValue));
-        walletRepository.save(wallet);
     }
+
+    public void withdraw(Wallet wallet, BigDecimal amount){
+        updateWalletBalance(wallet,amount,"SUBTRACT");
+    }
+
 
 
 }
