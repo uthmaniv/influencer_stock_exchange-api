@@ -1,36 +1,34 @@
 package com.uthmanIV.ise.user.investor;
 
 import com.uthmanIV.ise.api_response.ApiResponse;
+import com.uthmanIV.ise.exceptions.InsufficientFundsException;
 import com.uthmanIV.ise.exceptions.ResourceNotFoundException;
 import com.uthmanIV.ise.user.portfolio.PortfolioService;
 import com.uthmanIV.ise.user.stock.StockResponseDto;
-import com.uthmanIV.ise.user.stock.StockService;
-import com.uthmanIV.ise.user.transaction.Transaction;
-import com.uthmanIV.ise.user.watchlist.WatchList;
+import com.uthmanIV.ise.user.stock.stock_transaction.StockTransactionService;
 import com.uthmanIV.ise.user.watchlist.WatchListService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import java.math.BigDecimal;
+import java.util.List;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/investor")
 @RequiredArgsConstructor
 public class InvestorController {
 
-    private final InvestorService investorService;
     private final WatchListService watchListService;
-    private final StockService stockService;
     private final PortfolioService portfolioService;
+    private final StockTransactionService stockTransactionService;
 
-    @GetMapping("{id}/stocks")
-    public ResponseEntity<ApiResponse> getStocks(@PathVariable Long id){
+    @GetMapping("{userId}/stocks")
+    public ResponseEntity<ApiResponse> getStocks(@PathVariable Long userId){
         try{
-            List<StockResponseDto> stocks = portfolioService.getPortfolioStocks(id);
+            List<StockResponseDto> stocks = portfolioService.getPortfolioStocks(userId);
             return ResponseEntity.ok(new ApiResponse("Portfolio Fetched successfully",stocks));
         }
         catch (ResourceNotFoundException e){
@@ -39,10 +37,10 @@ public class InvestorController {
         }
     }
 
-    @GetMapping("{id}/watchlist")
-    public ResponseEntity<ApiResponse> getWatchList(@PathVariable Long id){
+    @GetMapping("{userId}/watchlist")
+    public ResponseEntity<ApiResponse> getWatchList(@PathVariable Long userId){
         try{
-            List<StockResponseDto> watchList = watchListService.getWatchList(id);
+            List<StockResponseDto> watchList = watchListService.getWatchList(userId);
             return ResponseEntity.ok(new ApiResponse("Success",watchList));
         }
         catch (ResourceNotFoundException e){
@@ -51,11 +49,43 @@ public class InvestorController {
         }
     }
 
-    @PostMapping("{id}/watchlist")
-    public ResponseEntity<ApiResponse> addToWatchList(@PathVariable Long id,
+    @PostMapping("{userId}/stock")
+    public ResponseEntity<?> buyStock(@PathVariable Long userId,
+                                      @RequestParam @Valid BigDecimal numberOfShares,
+                                      @RequestParam Long stockId){
+        try{
+            stockTransactionService.buyStock(userId,numberOfShares,stockId);
+            return ResponseEntity.noContent().build();
+        }
+        catch (ResourceNotFoundException e){
+            return  ResponseEntity.status(NOT_FOUND)
+                    .body(new ApiResponse(e.getMessage(),null));
+        }
+        catch (InsufficientFundsException e){
+            return  ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse(e.getMessage(),null));
+        }
+    }
+
+    @DeleteMapping("{userId}/stock")
+    public ResponseEntity<?> sellStock(@PathVariable Long userId,
+                                       @RequestParam @Valid BigDecimal numberOfShares,
+                                       @RequestParam Long stockId){
+        try{
+            stockTransactionService.sellStock(userId,numberOfShares,stockId);
+            return ResponseEntity.noContent().build();
+        }
+        catch (ResourceNotFoundException e){
+            return  ResponseEntity.status(NOT_FOUND)
+                    .body(new ApiResponse(e.getMessage(),null));
+        }
+    }
+
+    @PostMapping("{userId}/watchlist")
+    public ResponseEntity<ApiResponse> addToWatchList(@PathVariable Long userId,
                                                       @RequestParam Long stockId){
         try{
-            watchListService.addToWatchList(id,stockId);
+            watchListService.addToWatchList(userId,stockId);
             return ResponseEntity
                     .status(CREATED)
                     .body(new ApiResponse("Successfully added to watchlist", null));
@@ -78,16 +108,5 @@ public class InvestorController {
                     .body(new ApiResponse(e.getMessage(), null));
         }
     }
-
-//    @GetMapping
-//    public ResponseEntity<List<Transaction>> getTransactions(){
-//        return ResponseEntity.ok(null);
-//    }
-//
-//    @GetMapping
-//    public ResponseEntity<WatchList> getWatchList(){
-//        return ResponseEntity.ok(null);
-//    }
-
 
 }

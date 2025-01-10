@@ -25,6 +25,7 @@ public class WalletService {
         return newBalance.compareTo(BigDecimal.ZERO) >= 0;
     }
 
+    @Transactional
     public void updateWalletBalance(Wallet wallet, BigDecimal amount,String updateType){
         if (updateType.equals("ADD")){
             wallet.setWalletBalance(wallet

@@ -2,7 +2,6 @@ package com.uthmanIV.ise.user.portfolio;
 
 import com.uthmanIV.ise.exceptions.ResourceNotFoundException;
 import com.uthmanIV.ise.user.User;
-import com.uthmanIV.ise.user.investor.Investor;
 import com.uthmanIV.ise.user.stock.Stock;
 import com.uthmanIV.ise.user.stock.StockMapper;
 import com.uthmanIV.ise.user.stock.StockRepository;
@@ -53,10 +52,16 @@ public class PortfolioService {
     }
 
     @Transactional
-    public void addStockToPortfolio(User user,Stock newStock){
-        Portfolio portfolio = user.getPortfolio();
-
+    public void buyStock(Long userId, Long stockId){
+        Portfolio portfolio =
+                portfolioRepository.findByUserId(userId)
+                                .orElseThrow(()-> new ResourceNotFoundException
+                                        ("Portfolio not found for user with id :"+userId));
+        Stock newStock =
+                stockRepository.findById(stockId)
+                                .orElseThrow(()-> new ResourceNotFoundException("Stock wih id: " + stockId +" not found"));
         portfolio.getStocks().add(newStock);
+        //updateUserPortfolioValue(user,"BUY", stockPrice);
 
         portfolioRepository.save(portfolio);
     }

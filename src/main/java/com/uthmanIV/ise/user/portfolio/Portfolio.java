@@ -12,6 +12,7 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,20 +28,14 @@ public class Portfolio implements Serializable {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "investor_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "portfolio_stock",
-            joinColumns = @JoinColumn(name = "portfolio_id"),
-            inverseJoinColumns = @JoinColumn(name = "stock_id")
-    )
-    private Set<Stock> stocks;
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PortfolioStock> portfolioStocks = new HashSet<>();
 
-    @Column(name = "stock_value")
-    @NotNull
-    private BigDecimal stockValue;
+    @Column(name = "stock_value", nullable = false)
+    private BigDecimal stockValue = BigDecimal.ZERO;
 
     @Override
     public final boolean equals(Object o) {
