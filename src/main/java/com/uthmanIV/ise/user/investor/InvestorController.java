@@ -51,10 +51,10 @@ public class InvestorController {
 
     @PostMapping("{userId}/stock")
     public ResponseEntity<?> buyStock(@PathVariable Long userId,
-                                      @RequestParam @Valid BigDecimal numberOfShares,
-                                      @RequestParam Long stockId){
+                                      @RequestParam Long stockId,
+                                      @RequestParam @Valid BigDecimal numberOfShares){
         try{
-            stockTransactionService.buyStock(userId,numberOfShares,stockId);
+            portfolioService.buyStock(userId,stockId,numberOfShares);
             return ResponseEntity.noContent().build();
         }
         catch (ResourceNotFoundException e){
@@ -72,7 +72,7 @@ public class InvestorController {
                                        @RequestParam @Valid BigDecimal numberOfShares,
                                        @RequestParam Long stockId){
         try{
-            stockTransactionService.sellStock(userId,numberOfShares,stockId);
+            portfolioService.sellStock(userId,numberOfShares,stockId);
             return ResponseEntity.noContent().build();
         }
         catch (ResourceNotFoundException e){
