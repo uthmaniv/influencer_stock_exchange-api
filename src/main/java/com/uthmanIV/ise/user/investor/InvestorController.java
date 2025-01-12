@@ -5,6 +5,7 @@ import com.uthmanIV.ise.exceptions.InsufficientFundsException;
 import com.uthmanIV.ise.exceptions.ResourceNotFoundException;
 import com.uthmanIV.ise.user.portfolio.PortfolioService;
 import com.uthmanIV.ise.user.stock.StockResponseDto;
+import com.uthmanIV.ise.user.stock.stock_transaction.StockTransactionDto;
 import com.uthmanIV.ise.user.stock.stock_transaction.StockTransactionService;
 import com.uthmanIV.ise.user.watchlist.WatchListService;
 import jakarta.validation.Valid;
@@ -45,6 +46,18 @@ public class InvestorController {
         }
         catch (ResourceNotFoundException e){
             return  ResponseEntity.status(NOT_FOUND)
+                    .body(new ApiResponse(e.getMessage(),null));
+        }
+    }
+
+    @GetMapping("{userId}/stockTransactions")
+    public ResponseEntity<ApiResponse> getStockTransactions(@PathVariable Long userId){
+        try{
+            List<StockTransactionDto> transactions = stockTransactionService.getStockTransactions(userId);
+            return ResponseEntity.ok(new ApiResponse("Success", transactions));
+        }
+        catch (ResourceNotFoundException e){
+            return ResponseEntity.status(NOT_FOUND)
                     .body(new ApiResponse(e.getMessage(),null));
         }
     }

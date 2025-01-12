@@ -7,6 +7,8 @@ import com.uthmanIV.ise.user.stock.Stock;
 import com.uthmanIV.ise.user.stock.StockMapper;
 import com.uthmanIV.ise.user.stock.StockRepository;
 import com.uthmanIV.ise.user.stock.StockResponseDto;
+import com.uthmanIV.ise.user.stock.stock_transaction.StockTransactionService;
+import com.uthmanIV.ise.user.transaction.TransactionType;
 import com.uthmanIV.ise.user.wallet.WalletRepository;
 import com.uthmanIV.ise.user.wallet.WalletService;
 import jakarta.transaction.Transactional;
@@ -27,6 +29,7 @@ public class PortfolioService {
     private final WalletService walletService;
     private final WalletRepository walletRepository;
     private final StockMapper stockMapper;
+    private final StockTransactionService stockTransactionService;
 
 
     public List<StockResponseDto> getPortfolioStocks(Long userId) {
@@ -70,6 +73,8 @@ public class PortfolioService {
 
     @Transactional
     public void buyStock(Long userId, Long stockId, BigDecimal numberOfShares) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new ResourceNotFoundException("User not found with Id: " + userId));
         // Retrieve the portfolio for the given user
         Portfolio portfolio = portfolioRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Portfolio not found for user with id: " + userId));
@@ -106,6 +111,13 @@ public class PortfolioService {
         // call updateUserPortfolioValue() with BUY
         // Save the updated portfolio
         portfolioRepository.save(portfolio);
+        stockTransactionService.addTransactionData(
+                user,
+                TransactionType.BUY,
+                stock,
+                numberOfShares,
+                stock.getCurrentPrice(),
+                stockTotalPrice);
     }
 
     @Transactional
@@ -126,17 +138,24 @@ public class PortfolioService {
             throw new IllegalArgumentException("Insufficient shares to sell.");
         }
 
-        BigDecimal stockPrice = numberOfShares.multiply(stock.getCurrentPrice());
+        BigDecimal stockTotalPrice = numberOfShares.multiply(stock.getCurrentPrice());
         portfolioStock.setShares(portfolioStock.getShares().subtract(numberOfShares));
-        portfolioStock.setTotalPrice(portfolioStock.getTotalPrice().subtract(stockPrice));
+        portfolioStock.setTotalPrice(portfolioStock.getTotalPrice().subtract(stockTotalPrice));
 
         if (portfolioStock.getShares().compareTo(BigDecimal.ZERO) == 0) {
             portfolio.getPortfolioStocks().remove(portfolioStock); // Remove stock if no shares left
         }
 
-        walletService.updateWalletBalance(user.getWallet(), stockPrice, "ADD");
+        walletService.updateWalletBalance(user.getWallet(), stockTotalPrice, "ADD");
         // call updateUserPortfolioValue() with SELL
         walletRepository.save(user.getWallet());
+        stockTransactionService.addTransactionData(
+                user,
+                TransactionType.SELL,
+                stock,
+                numberOfShares,
+                stock.getCurrentPrice(),
+                stockTotalPrice);
     }
 
 

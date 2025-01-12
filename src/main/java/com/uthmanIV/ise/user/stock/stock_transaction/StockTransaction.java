@@ -1,5 +1,6 @@
 package com.uthmanIV.ise.user.stock.stock_transaction;
 
+import com.uthmanIV.ise.user.User;
 import com.uthmanIV.ise.user.stock.Stock;
 import com.uthmanIV.ise.user.transaction.TransactionStatus;
 import com.uthmanIV.ise.user.transaction.TransactionType;
@@ -32,9 +33,9 @@ public class StockTransaction {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @OneToOne
-    @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
@@ -46,11 +47,11 @@ public class StockTransaction {
 
     @Column(name = "no_of_shares",nullable = false)
     @NotNull
-    private BigDecimal sharesBought;
+    private BigDecimal numberOfShares;
 
-    @Column(name = "price")
+    @Column(name = "stock_unit_price")
     @NotNull
-    private BigDecimal price;
+    private BigDecimal stockUnitPrice;
 
     @Column(name = "amount")
     @NotNull
