@@ -1,4 +1,4 @@
-package com.uthmanIV.ise.user.stock.stock_transaction;
+package com.uthmanIV.ise.user.transaction.stock_transaction;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

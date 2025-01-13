@@ -1,5 +1,6 @@
 package com.uthmanIV.ise.user.transaction;
 
+import com.uthmanIV.ise.user.User;
 import com.uthmanIV.ise.user.wallet.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -26,9 +27,9 @@ public class WithdrawalHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
-    @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @DateTimeFormat
     @Column(name = "date", nullable = false)

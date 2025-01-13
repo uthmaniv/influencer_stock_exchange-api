@@ -1,6 +1,7 @@
 package com.uthmanIV.ise.user.wallet;
 
 import com.uthmanIV.ise.user.User;
+import com.uthmanIV.ise.user.transaction.TransactionType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,10 @@ public class WalletService {
     }
 
     @Transactional
-    public void updateWalletBalance(Wallet wallet, BigDecimal amount,String updateType){
-        if (updateType.equals("ADD")){
+    public void updateWalletBalance(Wallet wallet,
+                                    BigDecimal amount,
+                                    TransactionType transactionType){
+        if (transactionType.equals(TransactionType.DEPOSIT) ||transactionType.equals(TransactionType.SELL)){
             wallet.setWalletBalance(wallet
                     .getWalletBalance()
                     .add(amount));
@@ -40,15 +43,5 @@ public class WalletService {
 
         walletRepository.save(wallet);
     }
-    public void deposit(Wallet wallet,BigDecimal amount){
-        updateWalletBalance(wallet,amount,"ADD");
-
-    }
-
-    public void withdraw(Wallet wallet, BigDecimal amount){
-        updateWalletBalance(wallet,amount,"SUBTRACT");
-    }
-
-
 
 }

@@ -5,14 +5,13 @@ import com.uthmanIV.ise.exceptions.InsufficientFundsException;
 import com.uthmanIV.ise.exceptions.ResourceNotFoundException;
 import com.uthmanIV.ise.user.portfolio.PortfolioService;
 import com.uthmanIV.ise.user.stock.StockResponseDto;
-import com.uthmanIV.ise.user.stock.stock_transaction.StockTransactionDto;
-import com.uthmanIV.ise.user.stock.stock_transaction.StockTransactionService;
+import com.uthmanIV.ise.user.transaction.stock_transaction.StockTransactionDto;
+import com.uthmanIV.ise.user.transaction.stock_transaction.StockTransactionService;
 import com.uthmanIV.ise.user.watchlist.WatchListService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.util.List;
 import static org.springframework.http.HttpStatus.*;

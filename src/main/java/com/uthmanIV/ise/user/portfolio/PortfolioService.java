@@ -1,5 +1,6 @@
 package com.uthmanIV.ise.user.portfolio;
 
+import com.uthmanIV.ise.exceptions.InsufficientFundsException;
 import com.uthmanIV.ise.exceptions.ResourceNotFoundException;
 import com.uthmanIV.ise.user.User;
 import com.uthmanIV.ise.user.UserRepository;
@@ -7,7 +8,7 @@ import com.uthmanIV.ise.user.stock.Stock;
 import com.uthmanIV.ise.user.stock.StockMapper;
 import com.uthmanIV.ise.user.stock.StockRepository;
 import com.uthmanIV.ise.user.stock.StockResponseDto;
-import com.uthmanIV.ise.user.stock.stock_transaction.StockTransactionService;
+import com.uthmanIV.ise.user.transaction.stock_transaction.StockTransactionService;
 import com.uthmanIV.ise.user.transaction.TransactionType;
 import com.uthmanIV.ise.user.wallet.WalletRepository;
 import com.uthmanIV.ise.user.wallet.WalletService;
@@ -50,10 +51,12 @@ public class PortfolioService {
 
 
     @Transactional
-    public void updateUserPortfolioValue(User user, String transactionType,BigDecimal stockValue){
+    public void updatePortfolioValue(User user,
+                                     BigDecimal stockValue,
+                                     TransactionType transactionType){
         Portfolio portfolio = user.getPortfolio();
 
-        if (transactionType.equals("BUY")){
+        if (transactionType.equals(TransactionType.BUY)){
             portfolio.setStockValue(portfolio
                     .getStockValue()
                     .add(stockValue));
@@ -84,6 +87,10 @@ public class PortfolioService {
                 .orElseThrow(() -> new ResourceNotFoundException("Stock with id: " + stockId + " not found"));
         BigDecimal stockTotalPrice = stock.getCurrentPrice().multiply(numberOfShares);
 
+        if (!walletService.hasSufficientFunds(user,stockTotalPrice)){
+            throw new InsufficientFundsException("Insufficient funds");
+        }
+
         // Find the PortfolioStock corresponding to the stock (if it already exists in the portfolio)
         PortfolioStock portfolioStock = portfolio.getPortfolioStocks().stream()
                 .filter(ps -> ps.getStock().getId().equals(stockId))
@@ -108,10 +115,11 @@ public class PortfolioService {
             portfolio.getPortfolioStocks().add(portfolioStock);
         }
 
-        // call updateUserPortfolioValue() with BUY
+        walletService.updateWalletBalance(user.getWallet(), stockTotalPrice, TransactionType.BUY);
+        updatePortfolioValue(user,stockTotalPrice,TransactionType.BUY);
         // Save the updated portfolio
         portfolioRepository.save(portfolio);
-        stockTransactionService.addTransactionData(
+        stockTransactionService.addTransaction(
                 user,
                 TransactionType.BUY,
                 stock,
@@ -146,10 +154,10 @@ public class PortfolioService {
             portfolio.getPortfolioStocks().remove(portfolioStock); // Remove stock if no shares left
         }
 
-        walletService.updateWalletBalance(user.getWallet(), stockTotalPrice, "ADD");
-        // call updateUserPortfolioValue() with SELL
+        walletService.updateWalletBalance(user.getWallet(), stockTotalPrice, TransactionType.SELL);
+        updatePortfolioValue(user,stockTotalPrice,TransactionType.SELL);
         walletRepository.save(user.getWallet());
-        stockTransactionService.addTransactionData(
+        stockTransactionService.addTransaction(
                 user,
                 TransactionType.SELL,
                 stock,
