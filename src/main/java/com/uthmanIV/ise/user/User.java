@@ -8,8 +8,6 @@ import jakarta.validation.constraints.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.usertype.UserType;
-
 import java.util.Objects;
 
 @Entity
@@ -56,22 +54,17 @@ public class User {
     @NotNull(message = "Verification status is required")
     private Boolean verificationStatus = false;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "watchlist")
+    @JoinColumn(name = "watchlist_id")
     private WatchList watchList;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
-
-    public enum UserType {
-        INVESTOR,
-        INFLUENCER
-    }
 
     @Override
     public final boolean equals(Object o) {

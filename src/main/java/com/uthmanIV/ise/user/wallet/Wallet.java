@@ -24,28 +24,28 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // Represents either an influencer or a user
 
     @Column(name = "wallet_balance", nullable = false)
     private BigDecimal walletBalance;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+//    @Column(name = "created_at", nullable = false, updatable = false)
+//    private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+//    @Column(name = "updated_at")
+//    private LocalDateTime updatedAt;
+//
+//    @PrePersist
+//    protected void onCreate() {
+//        this.createdAt = LocalDateTime.now();
+//    }
+//
+//    @PreUpdate
+//    protected void onUpdate() {
+//        this.updatedAt = LocalDateTime.now();
+//    }
 
     @Override
     public final boolean equals(Object o) {
@@ -66,9 +66,7 @@ public class Wallet {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "createdAt = " + createdAt + ", " +
-                "updatedAt = " + updatedAt + ")";
+                "id = " + id + ", " + ")";
     }
 }
 
