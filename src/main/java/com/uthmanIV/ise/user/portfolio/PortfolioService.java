@@ -99,7 +99,7 @@ public class PortfolioService {
 
         // If PortfolioStock exists, update the number of shares and total price
         if (portfolioStock != null) {
-            portfolioStock.setShares(portfolioStock.getShares().add(numberOfShares));
+            portfolioStock.setNumberOfShares(portfolioStock.getNumberOfShares().add(numberOfShares));
             portfolioStock.setTotalPrice(portfolioStock
                     .getTotalPrice()
                     .add(stockTotalPrice));
@@ -108,7 +108,7 @@ public class PortfolioService {
             portfolioStock = new PortfolioStock();
             portfolioStock.setStock(stock);
             portfolioStock.setPortfolio(portfolio);
-            portfolioStock.setShares(numberOfShares);
+            portfolioStock.setNumberOfShares(numberOfShares);
             portfolioStock.setTotalPrice(stock.getCurrentPrice().multiply(numberOfShares));
 
             // Add the new PortfolioStock to the portfolio's collection
@@ -142,15 +142,15 @@ public class PortfolioService {
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Stock not found in portfolio"));
 
-        if (portfolioStock.getShares().compareTo(numberOfShares) < 0) {
+        if (portfolioStock.getNumberOfShares().compareTo(numberOfShares) < 0) {
             throw new IllegalArgumentException("Insufficient shares to sell.");
         }
 
         BigDecimal stockTotalPrice = numberOfShares.multiply(stock.getCurrentPrice());
-        portfolioStock.setShares(portfolioStock.getShares().subtract(numberOfShares));
+        portfolioStock.setNumberOfShares(portfolioStock.getNumberOfShares().subtract(numberOfShares));
         portfolioStock.setTotalPrice(portfolioStock.getTotalPrice().subtract(stockTotalPrice));
 
-        if (portfolioStock.getShares().compareTo(BigDecimal.ZERO) == 0) {
+        if (portfolioStock.getNumberOfShares().compareTo(BigDecimal.ZERO) == 0) {
             portfolio.getPortfolioStocks().remove(portfolioStock); // Remove stock if no shares left
         }
 

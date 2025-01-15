@@ -27,7 +27,7 @@ public class PortfolioStock {
     private Stock stock;
 
     @Column(name = "shares", nullable = false)
-    private BigDecimal shares;
+    private BigDecimal numberOfShares;
 
     @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;

@@ -1,6 +1,10 @@
 package com.uthmanIV.ise.user;
 
 import com.uthmanIV.ise.exceptions.UserAlreadyExistException;
+import com.uthmanIV.ise.user.influencer.Influencer;
+import com.uthmanIV.ise.user.influencer.InfluencerRepository;
+import com.uthmanIV.ise.user.investor.Investor;
+import com.uthmanIV.ise.user.investor.InvestorRepository;
 import com.uthmanIV.ise.user.portfolio.Portfolio;
 import com.uthmanIV.ise.user.wallet.Wallet;
 import com.uthmanIV.ise.user.watchlist.WatchList;
@@ -16,6 +20,8 @@ import java.math.BigDecimal;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final InfluencerRepository influencerRepository;
+    private final InvestorRepository investorRepository;
 
     @Named("userFullName")
     public String getUserFullName(User user){
@@ -44,6 +50,7 @@ public class UserService {
             newUser.setFirstName(userRequestDto.firstName());
             newUser.setLastName(userRequestDto.lastName());
             newUser.setPictureUrl(userRequestDto.pictureUrl());
+            newUser.setUserType(userRequestDto.userType());
 
             portfolio.setUser(newUser);
             watchList.setUser(newUser);
@@ -55,8 +62,23 @@ public class UserService {
             newUser.setWallet(wallet);
 
             userRepository.save(newUser);
+            associateAndSaveUserByType(newUser);
         } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyExistException("User with email " + userRequestDto.email() + " already exists");
+        }
+    }
+
+    public void associateAndSaveUserByType(User user){
+        if (user.getUserType().equals(UserType.INFLUENCER)) {
+            Influencer influencer = new Influencer();
+            influencer.setUser(user);
+            //might require other initialization of fields for influencer
+            influencerRepository.save(influencer);
+        } else if (user.getUserType().equals(UserType.INVESTOR)) {
+            Investor investor = new Investor();
+            investor.setUser(user);
+            //might require other initialization of fields for investor
+            investorRepository.save(investor);
         }
     }
 
