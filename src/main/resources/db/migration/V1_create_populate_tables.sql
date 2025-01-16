@@ -15,6 +15,12 @@ CREATE TABLE IF NOT EXISTS user (
     FOREIGN KEY (watchlist_id) REFERENCES watchlist(id) ON DELETE CASCADE,
     FOREIGN KEY (wallet_id) REFERENCES wallet(id) ON DELETE CASCADE
 );
+-- Create Wallet
+CREATE TABLE IF NOT EXISTS wallet(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id NOT NULL,
+    wallet_balance DECIMAL(20, 2) NOT NULL DEFAULT 0.00,
+);
 
 -- Create influencer table
 CREATE TABLE IF NOT EXISTS influencer (
@@ -51,6 +57,20 @@ CREATE TABLE IF NOT EXISTS stock (
     FOREIGN KEY (influencer_id) REFERENCES influencer(id) ON DELETE CASCADE
 );
 
+--Create Watchlist table
+CREATE TABLE IF NOT EXISTS watchlist(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id NOT NULL
+);
+
+--Create Watchlist_stock table
+CREATE TABLE IF NOT EXISTS watchlist_stock(
+    watchlist_id NOT NULL,
+    stock_id NOT NULL,
+    FOREIGN KEY watchlist_id REFERENCES watchlist(id) ON DELETE CASCADE,
+    FOREIGN KEY stock_id REFERENCES stock(id) ON DELETE CASCADE
+);
+
 -- Create portfolio table
 CREATE TABLE IF NOT EXISTS portfolio (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -65,8 +85,35 @@ CREATE TABLE IF NOT EXISTS portfolio_stock (
     portfolio_id BIGINT NOT NULL,
     stock_id BIGINT NOT NULL,
     shares DECIMAL(20, 2) NOT NULL,       -- The number of shares (decimal for precision)
-    total_price DECIMAL(20, 2) NOT NULL,  -- The total price for the shares owned
+    total_price DECIMAL(20, 2) NOT NULL,
     FOREIGN KEY (portfolio_id) REFERENCES portfolio(id) ON DELETE CASCADE,
     FOREIGN KEY (stock_id) REFERENCES stock(id) ON DELETE CASCADE
+);
+
+--CREATE Transaction table
+CREATE TABLE IF NOT EXISTS transaction(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NULL,
+    type VARCHAR(255)  NOT NULL,
+    amount DECIMAL (20, 2) NOT NULL,
+    description VARCHAR(255),
+    date TIMESTAMP NOT NULL,
+    status VARCHAR(255) NOT NULL
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
+
+--Create Stock transaction table
+CREATE TABLE IF NOT EXISTS stock_transaction(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    date TIMESTAMP NOT NULL,
+    user_id NOT NULL,
+    transaction_type VARCHAR(255) NOT NULL,
+    stock_id NOT NULL,
+    shares  DECIMAL (20,2) NOT NULL,
+    unit_price DECIMAL (20,2) NOT NULL,
+    amount DECIMAL (20,2) NOT NULL,
+    status VARCHAR (255),
+    FOREIGN KEY user_id REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY stock_id REFERENCES stock(id) ON DELETE CASCADE
 );
 

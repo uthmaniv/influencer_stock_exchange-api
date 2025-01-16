@@ -30,26 +30,26 @@ public class StockTransaction {
     private Long id;
 
     @DateTimeFormat
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private LocalDateTime date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private TransactionType transactionType;
 
     @ManyToOne
     @JoinColumn(name = "stock_id", nullable = false)
     private Stock stock;
 
-    @Column(name = "no_of_shares",nullable = false)
+    @Column(name = "shares",nullable = false)
     @NotNull
     private BigDecimal numberOfShares;
 
-    @Column(name = "stock_unit_price")
+    @Column(name = "unit_price")
     @NotNull
     private BigDecimal stockUnitPrice;
 

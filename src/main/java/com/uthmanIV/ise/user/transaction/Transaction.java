@@ -1,7 +1,9 @@
 package com.uthmanIV.ise.user.transaction;
 
+import com.uthmanIV.ise.user.User;
 import com.uthmanIV.ise.user.wallet.Wallet;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,24 +24,25 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "wallet_id", nullable = false)
-    private Wallet wallet; // Link to the wallet performing the transaction
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_type", nullable = false)
-    private TransactionType transactionType; // Enum: DEPOSIT, WITHDRAWAL, TRADE
+    @Column(name = "type", nullable = false)
+    private TransactionType transactionType;
 
     @Column(name = "amount", nullable = false)
-    private BigDecimal amount; // Amount involved in the transaction
+    private BigDecimal amount;
 
     @Column(name = "description")
-    private String description; // Optional description (e.g., withdrawal reason, trade details)
+    @Size(max = 500)
+    private String description;
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date; // Timestamp of the transaction
+    private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private TransactionStatus status; // Enum: PENDING, COMPLETED, FAILED
+    private TransactionStatus status;
 }
 

@@ -26,11 +26,10 @@ public class TransactionService {
                                BigDecimal amount,
                                TransactionType transactionType){
         Transaction newTransaction = new Transaction();
+        newTransaction.setUser(user);
         newTransaction.setTransactionType(transactionType);
-        newTransaction.setTransactionType(transactionType);
-        newTransaction.setDate(LocalDateTime.now());
         newTransaction.setAmount(amount);
-        newTransaction.setWallet(user.getWallet());
+        newTransaction.setDate(LocalDateTime.now());
         newTransaction.setDescription("Demo Method");
 
         transactionRepository.save(newTransaction);
