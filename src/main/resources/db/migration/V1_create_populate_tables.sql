@@ -116,4 +116,70 @@ CREATE TABLE IF NOT EXISTS stock_transaction(
     FOREIGN KEY user_id REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY stock_id REFERENCES stock(id) ON DELETE CASCADE
 );
+-- Insert Users
+INSERT INTO user (email, password,
+                  picture, first_name,
+                  last_name, user_type,
+                  verification_status)
+VALUES
+('john.doe@example.com', 'password123', NULL, 'John', 'Doe', 'INVESTOR', TRUE),
+('jane.smith@example.com', 'password456', 'https://example.com/pic.jpg', 'Jane', 'Smith', 'INFLUENCER', TRUE);
+
+-- Insert Wallets
+INSERT INTO wallet (user_id, wallet_balance)
+VALUES
+(1, 1000.00),
+(2, 2000.00);
+
+-- Insert Influencers
+INSERT INTO influencer (user_id, stock_symbol,
+                        phone_number, country,
+                        state, city, gender,
+                        influencer_type, influencer_tier,
+                        ethnicity, language)
+VALUES
+(2, 'AAPL', '123-456-7890', 'USA', 'California', 'Los Angeles', 'Female', 'Tech', 'Gold', 'Caucasian', 'English');
+
+-- Insert Investors
+INSERT INTO investor (user_id)
+VALUES
+(1);
+
+-- Insert Stocks
+INSERT INTO stock (influencer_id, current_price, price_change_today, weeklyPriceChange, market_cap, last_updated)
+VALUES
+(1, 150.25, 2.50, 5.00, 2500000000.00, CURRENT_TIMESTAMP);
+
+-- Insert Watchlists
+INSERT INTO watchlist (user_id)
+VALUES
+(1),
+(2);
+
+-- Insert Watchlist_Stocks
+INSERT INTO watchlist_stock (watchlist_id, stock_id)
+VALUES
+(1, 1),
+(2, 1);
+
+-- Insert Portfolios
+INSERT INTO portfolio (user_id, stock_value)
+VALUES
+(1, 500.00);
+
+-- Insert Portfolio_Stocks
+INSERT INTO portfolio_stock (portfolio_id, stock_id, shares, total_price)
+VALUES
+(1, 1, 10.00, 1500.00);
+
+-- Insert Transactions
+INSERT INTO transaction (user_id, type, amount, description, date, status)
+VALUES
+(1, 'DEPOSIT', 1000.00, 'Initial deposit', CURRENT_TIMESTAMP, 'COMPLETED'),
+(2, 'WITHDRAWAL', 500.00, 'Partial withdrawal', CURRENT_TIMESTAMP, 'COMPLETED');
+
+-- Insert Stock Transactions
+INSERT INTO stock_transaction (date, user_id, transaction_type, stock_id, shares, unit_price, amount, status)
+VALUES
+(CURRENT_TIMESTAMP, 1, 'BUY', 1, 10.00, 150.25, 1502.50, 'COMPLETED');
 

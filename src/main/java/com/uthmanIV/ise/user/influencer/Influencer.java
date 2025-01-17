@@ -33,7 +33,7 @@ public class Influencer implements Serializable {
 
     @Column(name = "stock_symbol", nullable = false, unique = true)
     @NotBlank(message = "Stock symbol is required")
-    @Size(max = 10, message = "Stock symbol cannot exceed 10 characters")
+    @Size(max = 5, message = "Stock symbol cannot exceed 10 characters")
     private String stockSymbol;
 
     @Column(name = "phone_number", nullable = false)

@@ -52,7 +52,7 @@ public class User {
 
     @Column(nullable = false)
     @NotNull(message = "Verification status is required")
-    private Boolean verificationStatus = false;
+    private boolean verificationStatus = false;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "portfolio_id")

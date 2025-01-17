@@ -12,6 +12,7 @@ public class InfluencerService {
 
     private final InfluencerRepository influencerRepository;
     private final UserRepository userRepository;
+    private final InfluencerMapper influencerMapper;
 
     public InfluencerDto updateInfluencer(InfluencerDto requestDto){
         if(userRepository.existsByEmail(requestDto.email())){
@@ -28,20 +29,24 @@ public class InfluencerService {
             updatedInfluencer.setLanguage(requestDto.language());
 
             influencerRepository.save(updatedInfluencer);
+            userRepository.save(user);
+
+            return influencerMapper.toDto(updatedInfluencer);
         }
 
         throw new ResourceNotFoundException("User not found");
     }
 
     public String influencerStockSymbol(String firstName, String lastName){
-        StringBuilder stockSymbol = new StringBuilder();
-        stockSymbol.append(firstName.charAt(0));
-        stockSymbol.append(firstName.charAt(2));
-        stockSymbol.append(lastName.charAt(0));
-        stockSymbol.append(lastName.charAt(2));
-
+        String stockSymbol = String.valueOf(firstName.charAt(0)) +
+                firstName.charAt(2) +
+                lastName.charAt(0) +
+                lastName.charAt(2);
+        if(influencerRepository.existsByStockSymbol(stockSymbol)){
+            stockSymbol= stockSymbol + "X";
+        }
         //might add additional check for the influencer by stockSymbol
-        return stockSymbol.toString().toUpperCase();
+        return stockSymbol.toUpperCase();
     }
 
 
