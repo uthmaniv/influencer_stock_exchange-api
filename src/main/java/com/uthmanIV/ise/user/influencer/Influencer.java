@@ -31,16 +31,14 @@ public class Influencer implements Serializable {
     @NotNull(message = "User association is required")
     private User user;
 
-//    @Column(name = "fullName")
-//    private String fullName;
-
-    @Column(name = "stock_symbol", nullable = false)
+    @Column(name = "stock_symbol", nullable = false, unique = true)
     @NotBlank(message = "Stock symbol is required")
     @Size(max = 10, message = "Stock symbol cannot exceed 10 characters")
     private String stockSymbol;
 
     @Column(name = "phone_number", nullable = false)
     @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^[0-9]{11}$", message = "Invalid phone number format")
     private String phoneNumber;
 
     @Column(name = "country", nullable = false)

@@ -3,6 +3,7 @@ package com.uthmanIV.ise.user;
 import com.uthmanIV.ise.exceptions.UserAlreadyExistException;
 import com.uthmanIV.ise.user.influencer.Influencer;
 import com.uthmanIV.ise.user.influencer.InfluencerRepository;
+import com.uthmanIV.ise.user.influencer.InfluencerService;
 import com.uthmanIV.ise.user.investor.Investor;
 import com.uthmanIV.ise.user.investor.InvestorRepository;
 import com.uthmanIV.ise.user.portfolio.Portfolio;
@@ -22,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final InfluencerRepository influencerRepository;
     private final InvestorRepository investorRepository;
+    private final InfluencerService influencerService;
 
     @Named("userFullName")
     public String getUserFullName(User user){
@@ -72,6 +74,8 @@ public class UserService {
         if (user.getUserType().equals(UserType.INFLUENCER)) {
             Influencer influencer = new Influencer();
             influencer.setUser(user);
+            influencer.setStockSymbol(
+                    influencerService.influencerStockSymbol(user.getFirstName(),user.getLastName()));
             //might require other initialization of fields for influencer
             influencerRepository.save(influencer);
         } else if (user.getUserType().equals(UserType.INVESTOR)) {
@@ -81,5 +85,6 @@ public class UserService {
             investorRepository.save(investor);
         }
     }
+
 
 }

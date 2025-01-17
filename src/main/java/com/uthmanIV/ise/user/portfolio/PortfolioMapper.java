@@ -11,7 +11,6 @@ public interface PortfolioMapper {
     @Mapping(source = "user.portfolio",
              target = "stockValue",
              qualifiedByName = "userPortfolioValue")
-    @Mapping(source = "stocks", target = "stocksDto")
     PortfolioDto toDto(Portfolio portfolio);
 }
 
