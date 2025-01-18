@@ -5,6 +5,6 @@ import com.uthmanIV.ise.user.stock.StockResponseDto;
 import java.math.BigDecimal;
 import java.util.List;
 
-public record PortfolioDto(BigDecimal stockValue,
+public record PortfolioDto(BigDecimal portfolioValue,
                            List<StockResponseDto> stocksDto) {
 }

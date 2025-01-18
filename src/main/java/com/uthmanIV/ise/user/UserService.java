@@ -35,11 +35,6 @@ public class UserService {
         return user.getPictureUrl();
     }
 
-    @Named("userPortfolioValue")
-    public BigDecimal portfolioValue(User user){
-        return user.getPortfolio().getStockValue();
-    }
-
     public void registerUser(UserRequestDto userRequestDto) {
         try {
             User newUser = new User();

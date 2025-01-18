@@ -14,6 +14,7 @@ import com.uthmanIV.ise.user.wallet.WalletRepository;
 import com.uthmanIV.ise.user.wallet.WalletService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
@@ -49,6 +50,11 @@ public class PortfolioService {
         return stockMapper.toDtoList(stocks);
     }
 
+    @Named("portfolioValue")
+    public BigDecimal portfolioValue(Long portfolioId){
+        //no checks?
+        return portfolioRepository.getTotalPortfolioValue(portfolioId);
+    }
 
     @Transactional
     public void updatePortfolioValue(User user,

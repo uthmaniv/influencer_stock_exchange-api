@@ -5,12 +5,12 @@ import com.uthmanIV.ise.user.stock.StockMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {PortfolioService.class, UserService.class, StockMapper.class})
+@Mapper(componentModel = "spring", uses = PortfolioService.class)
 public interface PortfolioMapper {
 
     @Mapping(source = "user.portfolio",
-             target = "stockValue",
-             qualifiedByName = "userPortfolioValue")
+             target = "portfolioValue",
+             qualifiedByName = "portfolioValue")
     PortfolioDto toDto(Portfolio portfolio);
 }
 

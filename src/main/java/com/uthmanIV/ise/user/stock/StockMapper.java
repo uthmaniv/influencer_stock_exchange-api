@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 
-@Mapper(componentModel = "spring", uses = UserService.class)
+@Mapper(componentModel = "spring", uses = {UserService.class,StockService.class})
 public interface StockMapper {
 
     @Mapping(source = "influencer.user", target = "influencerName", qualifiedByName = "userFullName")
