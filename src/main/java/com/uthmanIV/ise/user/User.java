@@ -1,8 +1,8 @@
 package com.uthmanIV.ise.user;
 
-import com.uthmanIV.ise.user.watchlist.WatchList;
-import com.uthmanIV.ise.user.portfolio.Portfolio;
-import com.uthmanIV.ise.user.wallet.Wallet;
+import com.uthmanIV.ise.watchlist.WatchList;
+import com.uthmanIV.ise.portfolio.Portfolio;
+import com.uthmanIV.ise.wallet.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import jakarta.validation.constraints.Size;

@@ -1,14 +1,14 @@
 package com.uthmanIV.ise.user;
 
 import com.uthmanIV.ise.exceptions.UserAlreadyExistException;
-import com.uthmanIV.ise.user.influencer.Influencer;
-import com.uthmanIV.ise.user.influencer.InfluencerRepository;
-import com.uthmanIV.ise.user.influencer.InfluencerService;
-import com.uthmanIV.ise.user.investor.Investor;
-import com.uthmanIV.ise.user.investor.InvestorRepository;
-import com.uthmanIV.ise.user.portfolio.Portfolio;
-import com.uthmanIV.ise.user.wallet.Wallet;
-import com.uthmanIV.ise.user.watchlist.WatchList;
+import com.uthmanIV.ise.influencer.Influencer;
+import com.uthmanIV.ise.influencer.InfluencerRepository;
+import com.uthmanIV.ise.influencer.InfluencerService;
+import com.uthmanIV.ise.investor.Investor;
+import com.uthmanIV.ise.investor.InvestorRepository;
+import com.uthmanIV.ise.portfolio.Portfolio;
+import com.uthmanIV.ise.wallet.Wallet;
+import com.uthmanIV.ise.watchlist.WatchList;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.dao.DataIntegrityViolationException;
